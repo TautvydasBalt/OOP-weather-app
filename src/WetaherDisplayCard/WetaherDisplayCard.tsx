@@ -82,6 +82,7 @@ class WetaherDisplayCard extends React.Component<CardsProps, CardsState> {
             case 'freezing-rain':
             case 'hail':
             case 'light-snow':
+            case 'snow-showers':
             case 'snow':
             case 'heavysnow':
                 return <WeatherSnowIcon />
