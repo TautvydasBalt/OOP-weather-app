@@ -1,41 +1,41 @@
 import WeatherDisplayInterface from "../WetaherDisplayCard/WeatherDisplayInterface";
 import WeatherAPIInterface from "../MeteoAPIConnection/WeatherAPIInterface";
 
-//Abstract
+//Abstrakti klase jeigu bus reikalinga adpatuoti kitu saltiniu duomenys
 abstract class DisplayWeatherAdapter {
-    displayData() {
+    public getDisplayData() {
         console.log("Display data");
     };
 }
 
-
+// Klase skirta adaptuoti duomenys gautus is meteo serviso
 class DisplayWeatherDataAdapter extends DisplayWeatherAdapter {
     private apiData: WeatherAPIInterface;
-    private displayFormData: WeatherDisplayInterface;
 
-    constructor(apiData: WeatherAPIInterface, displayFormData: WeatherDisplayInterface) {
+    constructor(apiData: any) {
         super();
         this.apiData = apiData;
-        this.displayFormData = displayFormData;
     }
 
-    private getDisplayData(): WeatherDisplayInterface {
-        // Adapt the API data to the format expected by the display form
+    // Metodas grazinantis paruostus duomnenys
+    public getDisplayData(): WeatherDisplayInterface {
         const adaptedData = this.adaptData(this.apiData);
-
-        // Call the display method of the display form with the adapted data
         return adaptedData;
     }
 
+    // Metodas adaptuojantis duomenys
     private adaptData(apiData: WeatherAPIInterface): WeatherDisplayInterface {
+        console.log(apiData);
         return {
-            station: apiData.airTemperature.toString(),
-            airTemperature: apiData.airTemperature.toString(),
-            feelsLikeTemperature: apiData.feelsLikeTemperature.toString(),
-            windSpeed: apiData.windSpeed.toString(),
-            seaLevelPressure: apiData.seaLevelPressure.toString(),
-            relativeHumidity: apiData.relativeHumidity.toString(),
-            conditionCode: apiData.conditionCode,
+            station: apiData.station.name,
+            airTemperature: apiData.observations[1].airTemperature.toString(),
+            feelsLikeTemperature: apiData.observations[1].feelsLikeTemperature.toString(),
+            windSpeed: apiData.observations[1].windSpeed.toString(),
+            seaLevelPressure: apiData.observations[1].seaLevelPressure.toString(),
+            relativeHumidity: apiData.observations[1].relativeHumidity.toString(),
+            conditionCode: apiData.observations[1].conditionCode,
         };
     }
 }
+
+export default DisplayWeatherDataAdapter;

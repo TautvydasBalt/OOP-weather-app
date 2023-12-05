@@ -5,6 +5,8 @@ import WetaherDisplayCard from "../WetaherDisplayCard/WetaherDisplayCard";
 import styles from './Client.module.scss';
 import Stations from "../MeteoAPIConnection/StationInterface";
 import WeatherDisplayInterface from "../WetaherDisplayCard/WeatherDisplayInterface";
+import WeatherAPIInterface from "../MeteoAPIConnection/WeatherAPIInterface";
+import DisplayWeatherDataAdapter from "../DisplayWeatherDataAdapter/DisplayWeatherDataAdapter";
 
 
 interface ClientState {
@@ -57,8 +59,9 @@ class Client extends React.Component<{}, ClientState> {
   private async onSubmit() {
     const weatherConn = new MeteoConnection();
     const result = await weatherConn.getWeatherByCity(this.state.selectedStation);
-    result.data.observations[1].station = result.data.station.name;
-    if (result) this.setState({ weatherContent: [...this.state.weatherContent, result.data.observations[1]] });
+    const weatherDataAdapter = new DisplayWeatherDataAdapter(result.data);
+    const displayFormData: WeatherDisplayInterface = weatherDataAdapter.getDisplayData();
+    if (displayFormData) this.setState({ weatherContent: [...this.state.weatherContent, displayFormData] });
     this.handleClose();
   }
 
