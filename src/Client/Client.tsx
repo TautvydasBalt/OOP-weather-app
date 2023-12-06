@@ -1,10 +1,11 @@
-import { Button, Dialog, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { Button, Checkbox, Dialog, FormControlLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import MeteoConnection from "../MeteoAPIConnection/MeteoAPIConnection";
 import React from "react";
 import WeatherDisplayCard from "../WetaherDisplayCard/WeatherDisplayCard";
 import styles from './Client.module.scss';
 import Stations from "../MeteoAPIConnection/StationInterface";
 import DisplayWeatherDataAdapter from "../DisplayWeatherDataAdapter/DisplayWeatherDataAdapter";
+import WeatherBuilder from "../WeatherBuilder/WeatherBuilder";
 
 
 interface ClientState {
@@ -12,6 +13,10 @@ interface ClientState {
   stations: Stations[];
   dialogOpen: boolean;
   selectedStation: string;
+
+  humidityChecked: boolean;
+  pressureChecked: boolean;
+  windSpeedChecked: boolean;
 }
 
 class Client extends React.Component<{}, ClientState> {
@@ -23,6 +28,9 @@ class Client extends React.Component<{}, ClientState> {
       stations: [],
       dialogOpen: false,
       selectedStation: '',
+      humidityChecked: true,
+      pressureChecked: true,
+      windSpeedChecked: true,
     }
   }
 
@@ -41,6 +49,9 @@ class Client extends React.Component<{}, ClientState> {
                 return <MenuItem key={index} value={element.code}>{element.name}</MenuItem>
               })}
             </Select>
+            <FormControlLabel control={<Checkbox checked={this.state.humidityChecked} onChange={(evt) => this.setState({ humidityChecked: evt.target.checked })} />} label="Add Humidity" />
+            <FormControlLabel control={<Checkbox checked={this.state.pressureChecked} onChange={(evt) => this.setState({ pressureChecked: evt.target.checked })} />} label="Add Pressure" />
+            <FormControlLabel control={<Checkbox checked={this.state.windSpeedChecked} onChange={(evt) => this.setState({ windSpeedChecked: evt.target.checked })} />} label="Add Wind Speed" />
             <Button variant="contained" onClick={() => this.onSubmit()}>Add</Button>
           </div>
         </Dialog>
@@ -59,18 +70,23 @@ class Client extends React.Component<{}, ClientState> {
     const result = await weatherConn.getWeatherByCity(this.state.selectedStation);
     //Adapt data received from service
     const weatherDataAdapter = new DisplayWeatherDataAdapter(result.data);
-    //Decorator add humidity
+    const weatherBuilder = new WeatherBuilder()
+    const displayCard = weatherDataAdapter.getDisplayData();
 
+    //Builder add humidity
+    if (this.state.humidityChecked) weatherBuilder.addHumidity(displayCard.props.relativeHumidity);
 
-    //Decorator add pressure
+    //Builder add pressure
+    if (this.state.pressureChecked) weatherBuilder.addPressure(displayCard.props.seaLevelPressure);
 
+    //Builder add wind speed
+    if (this.state.windSpeedChecked) weatherBuilder.addWindSpeed(displayCard.props.seaLevelPressure);
 
-    //Decorator add wind speed
+    weatherBuilder.getExtraWeatherInfoProduct().getParts().forEach(part =>
+      displayCard.props.extraContent.push(part)
+    );
 
-
-
-    const displayFormData = weatherDataAdapter.getDisplayData();
-    if (displayFormData) this.setState({ cardsArray: [...this.state.cardsArray, displayFormData] });
+    if (displayCard) this.setState({ cardsArray: [...this.state.cardsArray, displayCard] });
     this.handleClose();
   }
 

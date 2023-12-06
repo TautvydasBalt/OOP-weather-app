@@ -20,7 +20,6 @@ class DisplayWeatherDataAdapter extends WeatherDisplayCard {
 
     // Metodas adaptuojantis duomenys
     private adaptData(apiData: WeatherAPIInterface): WeatherDisplayInterface {
-        console.log(apiData);
         return {
             station: apiData.station.name,
             airTemperature: apiData.observations[1].airTemperature.toString(),
@@ -29,6 +28,7 @@ class DisplayWeatherDataAdapter extends WeatherDisplayCard {
             seaLevelPressure: apiData.observations[1].seaLevelPressure.toString(),
             relativeHumidity: apiData.observations[1].relativeHumidity.toString(),
             conditionCode: apiData.observations[1].conditionCode,
+            extraContent: [],
         };
     }
 }

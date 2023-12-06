@@ -1,17 +1,10 @@
 import { Card } from "@mui/material";
 import styles from './WeatherDisplayCard.module.scss';
 import React from "react";
-import { HumidityIcon, PressureIcon, WeatherCloudyIcon, WeatherFogIcon, WeatherPartialSunnyIcon, WeatherRainIcon, WeatherSnowIcon, WeatherSunnyIcon, WeatherThunderIcon, WindIcon } from "../svgIcons/svgIcons";
+import { WeatherCloudyIcon, WeatherFogIcon, WeatherPartialSunnyIcon, WeatherRainIcon, WeatherSnowIcon, WeatherSunnyIcon, WeatherThunderIcon } from "../svgIcons/svgIcons";
 import WeatherDisplayInterface from "./WeatherDisplayInterface";
-import ConcreteDecoratorHumidity from "../Decorators/ConcreteDecoratorHumidity";
-import ConcreteDecoratorPressure from "../Decorators/ConcreteDecoratorPressure";
-import ConcreteDecoratorWindSpeed from "../Decorators/ConcreteDecoratorWindSpeed";
 
 class WeatherDisplayCard extends React.Component<WeatherDisplayInterface, {}> {
-
-    constructor(weatherContent: WeatherDisplayInterface) {
-        super(weatherContent);
-    }
 
     public render() {
         return <Card className={styles.myCard}>
@@ -34,9 +27,7 @@ class WeatherDisplayCard extends React.Component<WeatherDisplayInterface, {}> {
                     </div>
                 </div>
                 <div className={styles.extraContent}>
-                    <ConcreteDecoratorHumidity station={""} airTemperature={""} feelsLikeTemperature={""} windSpeed={""} seaLevelPressure={""} relativeHumidity={this.props.relativeHumidity} conditionCode={""}/>
-                    <ConcreteDecoratorPressure station={""} airTemperature={""} feelsLikeTemperature={""} windSpeed={""} seaLevelPressure={this.props.seaLevelPressure} relativeHumidity={""} conditionCode={""}/>
-                    <ConcreteDecoratorWindSpeed station={""} airTemperature={""} feelsLikeTemperature={""} windSpeed={this.props.windSpeed} seaLevelPressure={""} relativeHumidity={""} conditionCode={""}/>
+                    {this.props.extraContent.map((element) => element)}
                 </div>
             </div>
         </Card>

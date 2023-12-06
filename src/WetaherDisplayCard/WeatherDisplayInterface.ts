@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 interface WeatherDisplayInterface {
     station: string;
     airTemperature: string;
@@ -6,5 +8,6 @@ interface WeatherDisplayInterface {
     seaLevelPressure: string;
     relativeHumidity: string;
     conditionCode: string;
+    extraContent: ReactNode[];
 }
 export default WeatherDisplayInterface;

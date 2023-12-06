@@ -1,4 +1,3 @@
-import React from "react";
 import { HumidityIcon, PressureIcon, WindIcon } from "../svgIcons/svgIcons";
 
 interface Builder {
@@ -20,7 +19,7 @@ class WeatherBuilder implements Builder {
 
     public addHumidity(relativeHumidity: string): void {
         this.extraInfoProduct.parts.push(
-            <div>
+            <div key={"relativeHumidity"}>
                 <HumidityIcon />
                 <p>{"Humidity"}</p>
                 <p>{relativeHumidity}{'%'}</p>
@@ -29,7 +28,7 @@ class WeatherBuilder implements Builder {
     }
     public addPressure(seaLevelPressure: string): void {
         this.extraInfoProduct.parts.push(
-            <div>
+            <div key={"seaLevelPressure"}>
                 <PressureIcon />
                 <p>{"Pressure"}</p>
                 <p>{seaLevelPressure}{'hPa'}</p>
@@ -38,19 +37,24 @@ class WeatherBuilder implements Builder {
     }
     public addWindSpeed(windSpeed: string): void {
         this.extraInfoProduct.parts.push(
-            <div>
+            <div key={"windSpeed"}>
                 <WindIcon />
                 <p>{"Wind speed"}</p>
                 <p>{windSpeed}{'m/s'}</p>
             </div>
         );
     }
+
+    public getExtraWeatherInfoProduct(): ExtraWeatherInfoProduct {
+        const result = this.extraInfoProduct;
+        return result;
+    }
 }
 
 class ExtraWeatherInfoProduct {
     public parts: JSX.Element[] = [];
 
-    public renderParts(): JSX.Element[] {
+    public getParts(): JSX.Element[] {
         return this.parts;
     }
 }
