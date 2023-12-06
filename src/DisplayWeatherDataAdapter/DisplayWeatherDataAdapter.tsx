@@ -2,13 +2,6 @@ import WeatherDisplayInterface from "../WetaherDisplayCard/WeatherDisplayInterfa
 import WeatherAPIInterface from "../MeteoAPIConnection/WeatherAPIInterface";
 import WeatherDisplayCard from "../WetaherDisplayCard/WeatherDisplayCard";
 
-//Abstrakti klase jeigu bus reikalinga adpatuoti kitu saltiniu duomenys
-abstract class DisplayWeatherAdapter {
-    public getDisplayData() {
-        console.log("Display data");
-    };
-}
-
 // Klase skirta adaptuoti duomenys gautus is meteo serviso
 class DisplayWeatherDataAdapter extends WeatherDisplayCard {
     private apiData: WeatherAPIInterface;

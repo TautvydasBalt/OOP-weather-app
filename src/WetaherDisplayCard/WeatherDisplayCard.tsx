@@ -3,18 +3,15 @@ import styles from './WeatherDisplayCard.module.scss';
 import React from "react";
 import { HumidityIcon, PressureIcon, WeatherCloudyIcon, WeatherFogIcon, WeatherPartialSunnyIcon, WeatherRainIcon, WeatherSnowIcon, WeatherSunnyIcon, WeatherThunderIcon, WindIcon } from "../svgIcons/svgIcons";
 import WeatherDisplayInterface from "./WeatherDisplayInterface";
+import ConcreteDecoratorHumidity from "../Decorators/ConcreteDecoratorHumidity";
+import ConcreteDecoratorPressure from "../Decorators/ConcreteDecoratorPressure";
+import ConcreteDecoratorWindSpeed from "../Decorators/ConcreteDecoratorWindSpeed";
 
-interface CardsState {
-}
-
-class WeatherDisplayCard extends React.Component<WeatherDisplayInterface, CardsState> {
+class WeatherDisplayCard extends React.Component<WeatherDisplayInterface, {}> {
 
     constructor(weatherContent: WeatherDisplayInterface) {
         super(weatherContent);
-        this.state = {
-        }
     }
-
 
     public render() {
         return <Card className={styles.myCard}>
@@ -37,21 +34,9 @@ class WeatherDisplayCard extends React.Component<WeatherDisplayInterface, CardsS
                     </div>
                 </div>
                 <div className={styles.extraContent}>
-                    <div>
-                        <HumidityIcon />
-                        <p>{"Humidity"}</p>
-                        <p>{this.props.relativeHumidity}{'%'}</p>
-                    </div>
-                    <div>
-                        <PressureIcon />
-                        <p>{"Pressure"}</p>
-                        <p>{this.props.seaLevelPressure}{'hPa'}</p>
-                    </div>
-                    <div>
-                        <WindIcon />
-                        <p>{"Wind speed"}</p>
-                        <p>{this.props.windSpeed}{'m/s'}</p>
-                    </div>
+                    <ConcreteDecoratorHumidity station={""} airTemperature={""} feelsLikeTemperature={""} windSpeed={""} seaLevelPressure={""} relativeHumidity={this.props.relativeHumidity} conditionCode={""}/>
+                    <ConcreteDecoratorPressure station={""} airTemperature={""} feelsLikeTemperature={""} windSpeed={""} seaLevelPressure={this.props.seaLevelPressure} relativeHumidity={""} conditionCode={""}/>
+                    <ConcreteDecoratorWindSpeed station={""} airTemperature={""} feelsLikeTemperature={""} windSpeed={this.props.windSpeed} seaLevelPressure={""} relativeHumidity={""} conditionCode={""}/>
                 </div>
             </div>
         </Card>

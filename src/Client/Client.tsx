@@ -57,7 +57,18 @@ class Client extends React.Component<{}, ClientState> {
   private async onSubmit() {
     const weatherConn = new MeteoConnection();
     const result = await weatherConn.getWeatherByCity(this.state.selectedStation);
+    //Adapt data received from service
     const weatherDataAdapter = new DisplayWeatherDataAdapter(result.data);
+    //Decorator add humidity
+
+
+    //Decorator add pressure
+
+
+    //Decorator add wind speed
+
+
+
     const displayFormData = weatherDataAdapter.getDisplayData();
     if (displayFormData) this.setState({ cardsArray: [...this.state.cardsArray, displayFormData] });
     this.handleClose();
