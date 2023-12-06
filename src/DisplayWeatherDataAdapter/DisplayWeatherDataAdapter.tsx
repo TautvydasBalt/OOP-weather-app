@@ -1,5 +1,6 @@
 import WeatherDisplayInterface from "../WetaherDisplayCard/WeatherDisplayInterface";
 import WeatherAPIInterface from "../MeteoAPIConnection/WeatherAPIInterface";
+import WeatherDisplayCard from "../WetaherDisplayCard/WeatherDisplayCard";
 
 //Abstrakti klase jeigu bus reikalinga adpatuoti kitu saltiniu duomenys
 abstract class DisplayWeatherAdapter {
@@ -9,18 +10,19 @@ abstract class DisplayWeatherAdapter {
 }
 
 // Klase skirta adaptuoti duomenys gautus is meteo serviso
-class DisplayWeatherDataAdapter extends DisplayWeatherAdapter {
+class DisplayWeatherDataAdapter extends WeatherDisplayCard {
     private apiData: WeatherAPIInterface;
 
     constructor(apiData: any) {
-        super();
+        super(apiData);
         this.apiData = apiData;
     }
 
     // Metodas grazinantis paruostus duomnenys
-    public getDisplayData(): WeatherDisplayInterface {
+    public getDisplayData(): WeatherDisplayCard {
         const adaptedData = this.adaptData(this.apiData);
-        return adaptedData;
+        const weatherDisplay = new WeatherDisplayCard(adaptedData);
+        return weatherDisplay;
     }
 
     // Metodas adaptuojantis duomenys

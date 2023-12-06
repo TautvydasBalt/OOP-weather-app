@@ -1,20 +1,16 @@
 import { Card } from "@mui/material";
-import styles from './WetaherDisplayCard.module.scss';
+import styles from './WeatherDisplayCard.module.scss';
 import React from "react";
 import { HumidityIcon, PressureIcon, WeatherCloudyIcon, WeatherFogIcon, WeatherPartialSunnyIcon, WeatherRainIcon, WeatherSnowIcon, WeatherSunnyIcon, WeatherThunderIcon, WindIcon } from "../svgIcons/svgIcons";
 import WeatherDisplayInterface from "./WeatherDisplayInterface";
 
-interface CardsProps {
-    weatherContent: WeatherDisplayInterface;
-}
-
 interface CardsState {
 }
 
-class WetaherDisplayCard extends React.Component<CardsProps, CardsState> {
+class WeatherDisplayCard extends React.Component<WeatherDisplayInterface, CardsState> {
 
-    constructor(props: CardsProps) {
-        super(props);
+    constructor(weatherContent: WeatherDisplayInterface) {
+        super(weatherContent);
         this.state = {
         }
     }
@@ -23,20 +19,20 @@ class WetaherDisplayCard extends React.Component<CardsProps, CardsState> {
     public render() {
         return <Card className={styles.myCard}>
             <div className={styles.myCardContent}>
-                <div className={styles.cityName}>{this.props.weatherContent.station}</div>
+                <div className={styles.cityName}>{this.props.station}</div>
                 <div className={styles.mainContent}>
                     <div className={styles.mainContentLeft}>
                         <div className={styles.airTemperature}>
-                            {this.props.weatherContent.airTemperature}{'°C'}
+                            {this.props.airTemperature}{'°C'}
                         </div>
                         <div className={styles.feelsLike}>
-                            {"Feels like: "} {this.props.weatherContent.feelsLikeTemperature}{'°C'}
+                            {"Feels like: "} {this.props.feelsLikeTemperature}{'°C'}
                         </div>
                     </div>
                     <div className={styles.mainContentRight}>
-                        {this.getWeatherIcon(this.props.weatherContent.conditionCode)}
+                        {this.getWeatherIcon(this.props.conditionCode)}
                         <div>
-                            {this.props.weatherContent.conditionCode.toUpperCase()}
+                            {this.props.conditionCode.toUpperCase()}
                         </div>
                     </div>
                 </div>
@@ -44,17 +40,17 @@ class WetaherDisplayCard extends React.Component<CardsProps, CardsState> {
                     <div>
                         <HumidityIcon />
                         <p>{"Humidity"}</p>
-                        <p>{this.props.weatherContent.relativeHumidity}{'%'}</p>
+                        <p>{this.props.relativeHumidity}{'%'}</p>
                     </div>
                     <div>
                         <PressureIcon />
                         <p>{"Pressure"}</p>
-                        <p>{this.props.weatherContent.seaLevelPressure}{'hPa'}</p>
+                        <p>{this.props.seaLevelPressure}{'hPa'}</p>
                     </div>
                     <div>
                         <WindIcon />
                         <p>{"Wind speed"}</p>
-                        <p>{this.props.weatherContent.windSpeed}{'m/s'}</p>
+                        <p>{this.props.windSpeed}{'m/s'}</p>
                     </div>
                 </div>
             </div>
@@ -99,4 +95,4 @@ class WetaherDisplayCard extends React.Component<CardsProps, CardsState> {
 
 }
 
-export default WetaherDisplayCard;
+export default WeatherDisplayCard;

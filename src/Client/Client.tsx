@@ -1,16 +1,14 @@
 import { Button, Dialog, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import MeteoConnection from "../MeteoAPIConnection/MeteoAPIConnection";
 import React from "react";
-import WetaherDisplayCard from "../WetaherDisplayCard/WetaherDisplayCard";
+import WeatherDisplayCard from "../WetaherDisplayCard/WeatherDisplayCard";
 import styles from './Client.module.scss';
 import Stations from "../MeteoAPIConnection/StationInterface";
-import WeatherDisplayInterface from "../WetaherDisplayCard/WeatherDisplayInterface";
-import WeatherAPIInterface from "../MeteoAPIConnection/WeatherAPIInterface";
 import DisplayWeatherDataAdapter from "../DisplayWeatherDataAdapter/DisplayWeatherDataAdapter";
 
 
 interface ClientState {
-  weatherContent: WeatherDisplayInterface[];
+  cardsArray: WeatherDisplayCard[];
   stations: Stations[];
   dialogOpen: boolean;
   selectedStation: string;
@@ -21,7 +19,7 @@ class Client extends React.Component<{}, ClientState> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      weatherContent: [],
+      cardsArray: [],
       stations: [],
       dialogOpen: false,
       selectedStation: '',
@@ -34,7 +32,7 @@ class Client extends React.Component<{}, ClientState> {
       <div>
         <Button variant="contained" onClick={() => this.handleOpen()}>Add</Button>
         <div className={styles.Cards}>
-          {this.state.weatherContent.map((element, index) => <WetaherDisplayCard key={index} weatherContent={element} />)}
+          {this.state.cardsArray.map(element => element.render())}
         </div>
         <Dialog onClose={this.handleClose.bind(this)} open={this.state.dialogOpen}>
           <div className={styles.dialog}>
@@ -60,8 +58,8 @@ class Client extends React.Component<{}, ClientState> {
     const weatherConn = new MeteoConnection();
     const result = await weatherConn.getWeatherByCity(this.state.selectedStation);
     const weatherDataAdapter = new DisplayWeatherDataAdapter(result.data);
-    const displayFormData: WeatherDisplayInterface = weatherDataAdapter.getDisplayData();
-    if (displayFormData) this.setState({ weatherContent: [...this.state.weatherContent, displayFormData] });
+    const displayFormData = weatherDataAdapter.getDisplayData();
+    if (displayFormData) this.setState({ cardsArray: [...this.state.cardsArray, displayFormData] });
     this.handleClose();
   }
 
